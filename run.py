@@ -1,4 +1,7 @@
 from slackbot.bot import Bot
+"""
+ここからslackobotを呼び出す,
+"""
 
 def main():
     bot = Bot()
