@@ -1,4 +1,4 @@
-# coding: utf-7
+# coding: utf-8
 
 """
 slackbotの一般的な受け答え関係の実装
@@ -30,20 +30,10 @@ from slackbot.bot import listen_to      # チャネル内発言で反応する�
 from slackbot.bot import default_reply  # 該当する応答がない場合に反応するデコーダ
 
 
-@respond_to('github', re.IGNORECASE)
-def github():
-    attachments = [
-    {
-        'fallback': 'Fallback text',
-        'author_name': 'Author',
-        'author_link': 'http://www.github.com',
-        'text': 'Some text',
-        'color': '#59afe1'
-    }]
-    message.send_webapi('', json.dumps(attachments))
-
 @default_reply()
 def default_func(message):
+    """
+    デフォルト返信
+    """
     message.reply("ん, 呼んだ?")      # メンション
     message.react("eyes")
-

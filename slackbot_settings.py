@@ -1,7 +1,10 @@
 # coding: utf-8
+"""
+slack botの設定. tokenとか, 静的なあdefault replyとか, 読み込むpluginとかとか.
+"""
 
 # botアカウントのトークンを指定
-API_TOKEN = "xoxb-259875641218-3m4OQkIBtTQARtktu1sJFP3A"
+API_TOKEN = ""
 
 # このbot宛のメッセージで、どの応答にも当てはまらない場合の応答文字列
 DEFAULT_REPLY = "...?"
