@@ -20,6 +20,12 @@ slackbotの一般的な受け答え関係の実装
 
 # message.send_webapi('', json.dumps(ary)) aryの中に入ったJSONを表示
 # text = message.body['text']     # メッセージを取り出す
+
+reference:
+    qiita: qiita.com/hypermkt/items/b2ffaf610ac92235c4d6
+    qiita: qiita.com/daikiojm/items/759ea40c00f9b539a4c8
+    Slack_API: https://api.slack.com/docs/message-attachments
+    Slack_API: https://api.slack.com/docs/message-buttons
 """
 
 import json
@@ -32,8 +38,26 @@ from slackbot.bot import default_reply  # 該当する応答がない場合に�
 
 @default_reply()
 def default_func(message):
-    """
-    デフォルト返信
-    """
-    message.reply("ん, 呼んだ?")      # メンション
-    message.react("eyes")
+  """
+  デフォルト返信
+  """
+  attachments = [
+    {
+      "pretext": "呼びましたかー?",
+      "text": "コマンド一覧",
+      "fallback": "What's up?",
+      "callback_id": "default_menu",
+      "color": "#eaf4c",
+      "attachment_type": "default",
+      "actions": [
+        {
+          "name": "sry...",
+          "text": "すみません...準備中です...",
+          "type": "button",
+          "value": "今しばらくお待ちください..."
+        }
+      ]
+    }
+  ]
+  message.react("eyes")
+  message.send_webapi('', json.dumps(attachments)) #aryの中に入ったJSONを表示
