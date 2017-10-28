@@ -9,9 +9,7 @@ slackbotの一般的な受け答え関係の実装
 #                           他の人へのメンションでは反応する
 #                           正規表現可能
 # @default_reply()          DEFAULT_REPLY と同じ働き
-#                           正規表現を指定すると、他のデコーダにヒットせず、
-#                           正規表現にマッチするときに反応
-#                           ・・・なのだが、正規表現を指定するとエラーになる？
+#                           現状正規表現を指定するとエラーになる？
 
 # message.reply('string')   @発言者名: string でメッセージを送信
 # message.send('string')    string を送信
@@ -29,35 +27,32 @@ reference:
 """
 
 import json
-import re
+import toml
+# import re
 
 from slackbot.bot import respond_to     # @botname: で反応するデコーダ
 from slackbot.bot import listen_to      # チャネル内発言で反応するデコーダ
 from slackbot.bot import default_reply  # 該当する応答がない場合に反応するデコーダ
 
+MSG_CONFIG = toml.load("./plugins/config.toml")["msg"]
+reply_list = MSG_CONFIG.key()
+
+
+
+def send_attachment(msg, content):
+  """
+    send_attachment(msg, content)
+    msgオブジェクトと, 送るjsonを指定すれば送るよ
+  """
+  msg.react("eyes")
+  temp = json.dumps(content)
+  msg.send_webapi('', temp)#aryの中に入ったJSONを表示
 
 @default_reply()
 def default_func(message):
   """
   デフォルト返信
   """
-  attachments = [
-    {
-      "pretext": "呼びましたかー?",
-      "text": "コマンド一覧",
-      "fallback": "What's up?",
-      "callback_id": "default_menu",
-      "color": "#eaf4c",
-      "attachment_type": "default",
-      "actions": [
-        {
-          "name": "sry...",
-          "text": "すみません...準備中です...",
-          "type": "button",
-          "value": "今しばらくお待ちください..."
-        }
-      ]
-    }
-  ]
-  message.react("eyes")
-  message.send_webapi('', json.dumps(attachments)) #aryの中に入ったJSONを表示
+  cash = open(MSG_CONFIG["default"]["path"])
+  content = json.load(cash)
+  send_attachment(message, [content])

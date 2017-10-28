@@ -1,7 +1,7 @@
 # hishoko
 Slack bot
 
-- When you try to use this scripts, make a "slackbot_settings.py" file, and describe this.
+- When you try to use this scripts, make a "slackbot_settings.py" file, and copy below
 
 ```
 # coding: utf-8

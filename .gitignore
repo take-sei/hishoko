@@ -1,8 +1,5 @@
-/*.py
-!run.py
-!example.py
-
 ### https://raw.github.com/github/gitignore/d0b1f7fef90caba0a22bb0a82d2f0abcc2cbc302/Python.gitignore
+*.toml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
