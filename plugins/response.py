@@ -1,23 +1,17 @@
 # coding: utf-8
 
 """
-slackbotの一般的な受け答え関係の実装
-# @respond_to('string')     bot宛のメッセージ
-#                           stringは正規表現が可能 「r'string'」
-# @listen_to('string')      チャンネル内のbot宛以外の投稿
-#                           @botname: では反応しないことに注意
-#                           他の人へのメンションでは反応する
-#                           正規表現可能
-# @default_reply()          DEFAULT_REPLY と同じ働き
-#                           現状正規表現を指定するとエラーになる？
+@respond_to('string')     bot宛のメッセージ  stringは正規表現が可能 「r'string'」
+@listen_to('string')      チャンネル内のbot宛以外の投稿 正規表現可
+                          @botname: では反応せず, 他人へのメンションには反応
+@default_reply()          DEFAULT_REPLY と同じ働き 現状正規表現は危険
 
-# message.reply('string')   @発言者名: string でメッセージを送信
-# message.send('string')    string を送信
-# message.react('icon_emoji')  発言者のメッセージにリアクション(スタンプ)する
-#                               文字列中に':'はいらない
+message.reply('string')   @発言者名: string でメッセージを送信
+message.send('string')    string を送信
+message.react('icon_emoji')  発言者のメッセージにリアクション(スタンプ)する, ":"は不要
 
-# message.send_webapi('', json.dumps(ary)) aryの中に入ったJSONを表示
-# text = message.body['text']     # メッセージを取り出す
+message.send_webapi('', json.dumps(ary)) aryの中に入ったJSONを表示
+message.body['text']     # メッセージを取り出す
 
 reference:
     qiita: qiita.com/hypermkt/items/b2ffaf610ac92235c4d6
@@ -26,33 +20,19 @@ reference:
     Slack_API: https://api.slack.com/docs/message-buttons
 """
 
-import json
+from functools import partial
 import toml
 # import re
 
-from slackbot.bot import respond_to     # @botname: で反応するデコーダ
-from slackbot.bot import listen_to      # チャネル内発言で反応するデコーダ
-from slackbot.bot import default_reply  # 該当する応答がない場合に反応するデコーダ
+from slackbot.bot import respond_to, listen_to, default_reply     # @botname: で反応するデコーダ
+from plugins import implemention as im
 
 MSG_CONFIG = toml.load("./plugins/config.toml")["msg"]
-reply_list = MSG_CONFIG.key()
+open_json = partial(im.open_config, MSG_CONFIG) #open_json("msg_name"), open msg obj
 
-
-
-def send_attachment(msg, content):
-  """
-    send_attachment(msg, content)
-    msgオブジェクトと, 送るjsonを指定すれば送るよ
-  """
-  msg.react("eyes")
-  temp = json.dumps(content)
-  msg.send_webapi('', temp)#aryの中に入ったJSONを表示
 
 @default_reply()
 def default_func(message):
-  """
-  デフォルト返信
-  """
-  cash = open(MSG_CONFIG["default"]["path"])
-  content = json.load(cash)
-  send_attachment(message, [content])
+  "default reply"
+  content = open_json("default")
+  im.send_attachment(message, [content])
