@@ -35,4 +35,5 @@ open_json = partial(im.open_config, MSG_CONFIG) #open_json("msg_name"), open msg
 def default_func(message):
   "default reply"
   content = open_json("default")
-  im.send_attachment(message, [content])
+  im.send_attachment(message, content)
+  print(message)

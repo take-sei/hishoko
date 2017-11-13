@@ -1,0 +1,28 @@
+{
+  "pretext": "呼びましたかー?",
+  "text": "できること一覧",
+  "fallback": "What's up?",
+  "callback_id": "default_menu",
+  "color": "#eaf4c",
+  "attachment_type": "default",
+  "actions": [
+    {
+      "name": "check_calender",
+      "text": "予定を確認",
+      "type": "button",
+      "value": "今しばらくお待ちください..."
+    },
+    {
+      "name": "check_Trello",
+      "text": "Trelloを確認",
+      "type": "button",
+      "value": "今しばらくお待ちください..."
+    },
+    {
+      "name": "search_GD",
+      "text": "GoogleDriveを探す",
+      "type": "button",
+      "value": "今しばらくお待ちください..."
+    }
+  ]
+}
